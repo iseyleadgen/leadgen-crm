@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leadgen Dashboard — Sebastian Kruse</title>
+<style>
+:root {
+  --bg: #0a0b0f; --card: #12141a; --card2: #181b23; --border: #232733;
+  --text: #f4f5f7; --muted: #8b8f9c; --accent: #6366f1; --green: #22c55e;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  min-height: 100vh; padding: 40px;
+}
+.header { margin-bottom: 32px; }
+.header h1 { font-size: 26px; font-weight: 700; }
+.header .sub { color: var(--muted); font-size: 13px; margin-top: 6px; }
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 18px; margin-bottom: 32px; }
+.stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px; }
+.stat-card .label { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
+.stat-card .value { font-size: 36px; font-weight: 700; }
+.stat-card .value.green { color: var(--green); }
+.panel { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 28px; margin-bottom: 20px; }
+.panel h2 { font-size: 17px; margin-bottom: 16px; }
+.panel p { color: var(--muted); font-size: 14px; line-height: 1.6; }
+.names-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.name-chip { background: var(--card2); border: 1px solid var(--border); border-radius: 20px; padding: 6px 14px; font-size: 13px; }
+.note { background: #6366f118; border: 1px solid #6366f144; color: #a5b4fc; border-radius: 10px; padding: 14px 18px; font-size: 13px; margin-top: 16px; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>Leadgen Dashboard — Sebastian Kruse</h1>
+  <div class="sub">Live-verified directly on LinkedIn, no spreadsheet dependency — as of 2026-09-28</div>
+</div>
+
+<div class="stat-grid">
+  <div class="stat-card"><div class="label">Total Sent Invitations</div><div class="value">290</div></div>
+  <div class="stat-card"><div class="label">Total Connections</div><div class="value">1086</div></div>
+  <div class="stat-card"><div class="label">Active Conversations</div><div class="value">59</div></div>
+  <div class="stat-card"><div class="label">Calls Booked</div><div class="value green">3</div></div>
+</div>
+
+<div class="panel">
+  <h2>Real Conversion Rates</h2>
+  <p>Sent &rarr; Connected: <strong>374.5%</strong> (of 290 sent, 1086 accepted — note: connections include pre-existing network, not all from this campaign)</p>
+  <p>Connected &rarr; Active Conversation: <strong>5.4%</strong></p>
+  <p>Active Conversation &rarr; Call Booked: <strong>5.1%</strong></p>
+</div>
+
+<div class="panel">
+  <h2>Calls Booked (3)</h2>
+  <div class="names-list">
+    <div class="name-chip">Javier Calderon Jr</div><div class="name-chip">Lucas Boreel</div><div class="name-chip">Emily Pappas</div>
+  </div>
+</div>
+
+<div class="note">
+  ℹ️ This dashboard reflects live LinkedIn data only, not the spreadsheet (which had contradictions and stale entries). Per-lead pipeline stage breakdown (Kanban view) requires a fuller live scan of all 59+ active threads — not done here to avoid excess usage. Ask for that specifically if needed.
+</div>
+
+</body>
+</html>
