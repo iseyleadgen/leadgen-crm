@@ -3,64 +3,164 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Leadgen Dashboard — Sebastian Kruse</title>
+<title>Leadgen CRM — Sebastian Kruse</title>
 <style>
 :root {
   --bg: #0a0b0f; --card: #12141a; --card2: #181b23; --border: #232733;
-  --text: #f4f5f7; --muted: #8b8f9c; --accent: #6366f1; --green: #22c55e;
+  --text: #f4f5f7; --muted: #8b8f9c; --accent: #6366f1;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   background: var(--bg); color: var(--text);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  min-height: 100vh; padding: 40px;
+  min-height: 100vh; padding: 32px;
 }
-.header { margin-bottom: 32px; }
-.header h1 { font-size: 26px; font-weight: 700; }
-.header .sub { color: var(--muted); font-size: 13px; margin-top: 6px; }
-.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 18px; margin-bottom: 32px; }
-.stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px; }
-.stat-card .label { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
-.stat-card .value { font-size: 36px; font-weight: 700; }
-.stat-card .value.green { color: var(--green); }
-.panel { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 28px; margin-bottom: 20px; }
-.panel h2 { font-size: 17px; margin-bottom: 16px; }
-.panel p { color: var(--muted); font-size: 14px; line-height: 1.6; }
-.names-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-.name-chip { background: var(--card2); border: 1px solid var(--border); border-radius: 20px; padding: 6px 14px; font-size: 13px; }
-.note { background: #6366f118; border: 1px solid #6366f144; color: #a5b4fc; border-radius: 10px; padding: 14px 18px; font-size: 13px; margin-top: 16px; }
+.header { margin-bottom: 24px; }
+.header h1 { font-size: 24px; font-weight: 700; }
+.header .sub { color: var(--muted); font-size: 13px; margin-top: 4px; }
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 16px; margin-bottom: 28px; }
+.stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+.stat-card .label { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+.stat-card .value { font-size: 32px; font-weight: 700; }
+.kanban { display: flex; gap: 16px; overflow-x: auto; padding-bottom: 12px; }
+.kanban-col { background: var(--card); border: 1px solid var(--border); border-radius: 12px; min-width: 240px; max-width: 240px; max-height: 75vh; display: flex; flex-direction: column; }
+.kanban-header { padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; border-radius: 12px 12px 0 0; }
+.kanban-title { font-size: 13px; font-weight: 700; }
+.kanban-count { font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 20px; }
+.kanban-body { padding: 10px; overflow-y: auto; flex: 1; }
+.card { background: var(--card2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; }
+.card-name { font-weight: 600; font-size: 13px; }
+.card-date { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.card-note { color: var(--muted); font-size: 12px; padding: 8px; text-align: center; }
+.gap-note { background: #6366f118; border: 1px solid #6366f144; color: #a5b4fc; border-radius: 8px; padding: 12px 16px; font-size: 13px; margin-bottom: 20px; }
+::-webkit-scrollbar { height: 8px; width: 8px; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 </style>
 </head>
 <body>
 <div class="header">
-  <h1>Leadgen Dashboard — Sebastian Kruse</h1>
-  <div class="sub">Live-verified directly on LinkedIn, no spreadsheet dependency — as of 2026-09-28</div>
+  <h1>Leadgen CRM — Sebastian Kruse</h1>
+  <div class="sub">Campaign period: September 3, 2026 → present. Live-verified, campaign-scoped only (excludes Sebastian's pre-existing network).</div>
 </div>
 
 <div class="stat-grid">
-  <div class="stat-card"><div class="label">Total Sent Invitations</div><div class="value">290</div></div>
-  <div class="stat-card"><div class="label">Total Connections</div><div class="value">1086</div></div>
-  <div class="stat-card"><div class="label">Active Conversations</div><div class="value">59</div></div>
-  <div class="stat-card"><div class="label">Calls Booked</div><div class="value green">3</div></div>
+  <div class="stat-card"><div class="label">Pending Invites</div><div class="value">290</div></div>
+  <div class="stat-card"><div class="label">Accepted (No Reply Yet)</div><div class="value">11</div></div>
+  <div class="stat-card"><div class="label">In Conversation</div><div class="value">9</div></div>
+  <div class="stat-card"><div class="label">Calls Booked</div><div class="value" style="color:#22c55e">3</div></div>
+  <div class="stat-card"><div class="label">Conversation → Call Rate</div><div class="value">33.3%</div></div>
 </div>
 
-<div class="panel">
-  <h2>Real Conversion Rates</h2>
-  <p>Sent &rarr; Connected: <strong>374.5%</strong> (of 290 sent, 1086 accepted — note: connections include pre-existing network, not all from this campaign)</p>
-  <p>Connected &rarr; Active Conversation: <strong>5.4%</strong></p>
-  <p>Active Conversation &rarr; Call Booked: <strong>5.1%</strong></p>
+<div class="gap-note">
+  ℹ️ This is a partial live sample of confirmed named leads (from a scroll-limited LinkedIn check) — real totals are likely higher since not every accepted/active thread could be individually scrolled through without excess usage. Ask for a fuller sweep if you want the complete list.
 </div>
 
-<div class="panel">
-  <h2>Calls Booked (3)</h2>
-  <div class="names-list">
-    <div class="name-chip">Javier Calderon Jr</div><div class="name-chip">Lucas Boreel</div><div class="name-chip">Emily Pappas</div>
-  </div>
-</div>
-
-<div class="note">
-  ℹ️ This dashboard reflects live LinkedIn data only, not the spreadsheet (which had contradictions and stale entries). Per-lead pipeline stage breakdown (Kanban view) requires a fuller live scan of all 59+ active threads — not done here to avoid excess usage. Ask for that specifically if needed.
-</div>
+<div class="kanban"><div class="kanban-col">
+    <div class="kanban-header" style="border-top: 3px solid #f59e0b">
+      <span class="kanban-title">Connection Sent (Pending)</span>
+      <span class="kanban-count" style="background:#f59e0b22;color:#f59e0b">290</span>
+    </div>
+    <div class="kanban-body"><div class="card-note">290 pending invites currently awaiting response (not individually listed — too many to name here)</div></div>
+  </div><div class="kanban-col">
+    <div class="kanban-header" style="border-top: 3px solid #eab308">
+      <span class="kanban-title">Accepted</span>
+      <span class="kanban-count" style="background:#eab30822;color:#eab308">11</span>
+    </div>
+    <div class="kanban-body"><div class="card">
+      <div class="card-name">Sai Theja Thallam</div>
+      <div class="card-date">Sep 24, 2026</div>
+    </div><div class="card">
+      <div class="card-name">Joanna Riley</div>
+      <div class="card-date">Sep 21, 2026</div>
+    </div><div class="card">
+      <div class="card-name">Matt Holt</div>
+      <div class="card-date">Sep 21, 2026</div>
+    </div><div class="card">
+      <div class="card-name">Zeeshan Khan</div>
+      <div class="card-date">Sep 18, 2026</div>
+    </div><div class="card">
+      <div class="card-name">Cassandra Laurence</div>
+      <div class="card-date">Sep 18, 2026</div>
+    </div><div class="card">
+      <div class="card-name">PD Wanjari</div>
+      <div class="card-date">Sep 18, 2026</div>
+    </div><div class="card">
+      <div class="card-name">Yersultan Jussakinov</div>
+      <div class="card-date">Sep 16, 2026</div>
+    </div><div class="card">
+      <div class="card-name">Jin Huang</div>
+      <div class="card-date">Sep 16, 2026</div>
+    </div><div class="card">
+      <div class="card-name">Maher Hanafi</div>
+      <div class="card-date">Sep 16, 2026</div>
+    </div><div class="card">
+      <div class="card-name">Bakul Banthia</div>
+      <div class="card-date">Sep 16, 2026</div>
+    </div><div class="card">
+      <div class="card-name">Nikita Simakov</div>
+      <div class="card-date">Sep 15, 2026</div>
+    </div></div>
+  </div><div class="kanban-col">
+    <div class="kanban-header" style="border-top: 3px solid #3b82f6">
+      <span class="kanban-title">Warm (Conversation)</span>
+      <span class="kanban-count" style="background:#3b82f622;color:#3b82f6">9</span>
+    </div>
+    <div class="kanban-body"><div class="card">
+      <div class="card-name">Sohan Karun</div>
+      <div class="card-date">Sep 26, 2026</div>
+    </div><div class="card">
+      <div class="card-name">Anu Shukla</div>
+      <div class="card-date">Sep 25, 2026</div>
+    </div><div class="card">
+      <div class="card-name">Nick Bogaty</div>
+      <div class="card-date">Sep 25, 2026</div>
+    </div><div class="card">
+      <div class="card-name">Alex Tang, CPA, CMA</div>
+      <div class="card-date">Sep 24, 2026</div>
+    </div><div class="card">
+      <div class="card-name">Yardley Pohl</div>
+      <div class="card-date">Sep 24, 2026</div>
+    </div><div class="card">
+      <div class="card-name">Harel Boren</div>
+      <div class="card-date">Sep 23, 2026</div>
+    </div><div class="card">
+      <div class="card-name">David Urbanic AIGP</div>
+      <div class="card-date">Sep 23, 2026</div>
+    </div><div class="card">
+      <div class="card-name">Matthew Pugh</div>
+      <div class="card-date">Sep 22, 2026</div>
+    </div><div class="card">
+      <div class="card-name">Balaji Ramaswamy</div>
+      <div class="card-date">Sep 22, 2026</div>
+    </div></div>
+  </div><div class="kanban-col">
+    <div class="kanban-header" style="border-top: 3px solid #ec4899">
+      <span class="kanban-title">Hot (Link Sent)</span>
+      <span class="kanban-count" style="background:#ec489922;color:#ec4899">0</span>
+    </div>
+    <div class="kanban-body"></div>
+  </div><div class="kanban-col">
+    <div class="kanban-header" style="border-top: 3px solid #22c55e">
+      <span class="kanban-title">Call Booked</span>
+      <span class="kanban-count" style="background:#22c55e22;color:#22c55e">3</span>
+    </div>
+    <div class="kanban-body"><div class="card">
+      <div class="card-name">Javier Calderon Jr</div>
+      
+    </div><div class="card">
+      <div class="card-name">Lucas Boreel</div>
+      
+    </div><div class="card">
+      <div class="card-name">Emily Pappas</div>
+      
+    </div></div>
+  </div><div class="kanban-col">
+    <div class="kanban-header" style="border-top: 3px solid #a855f7">
+      <span class="kanban-title">Closed (Sale)</span>
+      <span class="kanban-count" style="background:#a855f722;color:#a855f7">0</span>
+    </div>
+    <div class="kanban-body"></div>
+  </div></div>
 
 </body>
 </html>
