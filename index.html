@@ -8,7 +8,7 @@
   :root {
     --bg: #0b0d12; --card: #15181f; --card2: #1c202a; --border: #2a2f3b;
     --text: #eef0f5; --muted: #8b92a5; --accent: #6d8cff;
-    --trackA: #4f8ff0; --trackB: #f0973f;
+    --trackA: #f0973f; --trackB: #4f8ff0;
     --gray:#4b5163; --orange:#e0973f; --yellow:#e8d04a; --blue:#4f8ff0; --purple:#b77ff0; --green:#36cc7a; --gold:#f0c14f;
   }
   * { box-sizing: border-box; }
@@ -29,42 +29,37 @@
   .stat-card .label { color:var(--muted); font-size:13px; margin-top:4px; }
   .stat-card.accent .num { color:var(--accent); }
 
-  .section-title { font-size:14px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); margin:32px 0 14px; }
+  .section-title { font-size:14px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); margin:32px 0 14px; display:flex; justify-content:space-between; align-items:center; }
+  .section-title .hint { font-size:11px; text-transform:none; letter-spacing:0; color:var(--muted); font-weight:400; }
 
   .rate-row { display:flex; gap:14px; flex-wrap:wrap; }
   .rate-pill { background:var(--card2); border:1px solid var(--border); border-radius:8px; padding:12px 18px; flex:1; min-width:180px; }
   .rate-pill .pct { font-size:22px; font-weight:700; color:var(--green); }
   .rate-pill .desc { font-size:12px; color:var(--muted); margin-top:2px; }
 
-  .chart-wrap { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:20px; }
+  .chart-wrap { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:20px; overflow-x:auto; }
   .bar-row { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
   .bar-label { width:100px; font-size:12px; color:var(--muted); }
   .bar-track { flex:1; background:var(--card2); border-radius:5px; height:24px; overflow:hidden; }
   .bar-fill { height:100%; border-radius:5px; display:flex; align-items:center; justify-content:flex-end; padding-right:8px; color:#fff; font-size:11px; font-weight:700; }
-  .bar-fill.trackA { background:linear-gradient(90deg,var(--trackA),#8fb3ff); }
-  .bar-fill.trackB { background:linear-gradient(90deg,var(--trackB),#ffc080); }
-
-  .legend { display:flex; gap:18px; margin-top:14px; font-size:12px; color:var(--muted); }
-  .legend span { display:inline-flex; align-items:center; gap:6px; }
-  .legend .sw { width:10px; height:10px; border-radius:3px; display:inline-block; }
+  .bar-fill.trackA { background:linear-gradient(90deg,var(--trackA),#ffc080); }
+  .bar-fill.trackB { background:linear-gradient(90deg,var(--trackB),#8fb3ff); }
 
   .kanban { display:flex; gap:14px; overflow-x:auto; padding-bottom:12px; }
-  .col { border-radius:10px; min-width:250px; flex:1; display:flex; flex-direction:column; max-height:78vh; border:1px solid var(--border); }
+  .col { border-radius:10px; min-width:240px; flex:1; display:flex; flex-direction:column; max-height:78vh; border:1px solid var(--border); }
   .col-head { padding:14px 16px; border-bottom:1px solid var(--border); position:sticky; top:0; border-radius:10px 10px 0 0; }
   .col-head .title { font-weight:700; font-size:13px; color:#fff; }
   .col-head .count { color:rgba(255,255,255,0.75); font-size:12px; margin-top:2px; }
   .col-body { padding:10px; overflow-y:auto; flex:1; background:var(--card); border-radius:0 0 10px 10px; }
   .lead-card { background:var(--card2); border:1px solid var(--border); border-left:3px solid var(--accent); border-radius:8px; padding:11px 12px; margin-bottom:8px; }
   .lead-card .name { font-weight:600; font-size:13px; }
-  .lead-card .role { color:var(--muted); font-size:11.5px; margin-top:2px; }
-  .lead-card a { color:var(--accent); font-size:11px; text-decoration:none; }
 
   input#search { background:var(--card2); border:1px solid var(--border); color:var(--text); padding:9px 14px; border-radius:8px; width:280px; font-size:13px; margin-bottom:16px; }
   .filter-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
 
   .insight-card { background:var(--card); border:1px solid var(--border); border-left:3px solid var(--accent); border-radius:8px; padding:14px 18px; margin-bottom:12px; font-size:13.5px; line-height:1.5; }
 
-  svg.linechart { width:100%; height:280px; }
+  svg.linechart { height:280px; min-width:500px; }
   .lc-legend { display:flex; gap:18px; margin-top:10px; font-size:12px; }
   .lc-legend span { display:inline-flex; align-items:center; gap:6px; }
   .lc-legend .sw { width:14px; height:3px; display:inline-block; border-radius:2px; }
@@ -99,20 +94,21 @@
     <div class="section-title">Conversion Rates</div>
     <div class="rate-row" id="rates"></div>
 
-    <div class="section-title">Track Split (Track A vs Track B)</div>
+    <div class="section-title">Track Split (Track A vs Track B)<span class="hint" id="track-hint"></span></div>
     <div class="chart-wrap" id="track-chart"></div>
   </section>
 
   <section id="activity" class="view">
     <div class="section-title">Monthly Trend — Aug → Oct 2026</div>
-    <div class="chart-wrap">
-      <svg class="linechart" id="trend-svg" viewBox="0 0 600 280"></svg>
-      <div class="lc-legend">
-        <span><span class="sw" style="background:var(--accent)"></span>Connections Sent</span>
-        <span><span class="sw" style="background:var(--green)"></span>Connections Accepted</span>
-        <span><span class="sw" style="background:var(--gold)"></span>Calls Booked</span>
-      </div>
+    <div class="chart-wrap"><svg class="linechart" id="trend-svg-monthly" viewBox="0 0 600 280"></svg></div>
+    <div class="lc-legend">
+      <span><span class="sw" style="background:var(--accent)"></span>Connections Sent</span>
+      <span><span class="sw" style="background:var(--green)"></span>Connections Accepted</span>
+      <span><span class="sw" style="background:var(--gold)"></span>Calls Booked</span>
     </div>
+
+    <div class="section-title" style="margin-top:36px">Weekly Trend — Connections Accepted<span class="hint">Sent/Calls not available at weekly granularity from LinkedIn — shown monthly only above</span></div>
+    <div class="chart-wrap" style="overflow-x:auto"><svg class="linechart" id="trend-svg-weekly"></svg></div>
   </section>
 
   <section id="crm" class="view">
@@ -132,11 +128,11 @@
 </main>
 
 <script>
-const STAGE_ORDER = ['accepted','warm','hot','call_booked','closed'];
-const STAGE_LABELS = {accepted:'Connection Accepted', warm:'Follow-Up / Warm', hot:'Hot (Link Sent)', call_booked:'Call Booked', closed:'Closed (Sale Made)'};
-const STAGE_COLORS = {accepted:'#e8b94a', warm:'#4f8ff0', hot:'#b77ff0', call_booked:'#36cc7a', closed:'#f0c14f'};
+const STAGE_ORDER = ['accepted','warm','follow_up_due','hot','call_booked','closed'];
+const STAGE_LABELS = {accepted:'Connection Accepted', warm:'Warm (Ongoing Convo)', follow_up_due:'Follow-Up Due', hot:'Hot (Link Sent)', call_booked:'Call Booked', closed:'Closed (Sale Made)'};
+const STAGE_COLORS = {accepted:'#e8b94a', warm:'#36cc7a', follow_up_due:'#4f8ff0', hot:'#b77ff0', call_booked:'#2fae68', closed:'#f0c14f'};
 
-const _EMBEDDED_DATA = {"generated_at": "2026-10-02T13:45:00", "source_note": "All numbers pulled directly from LinkedIn (not the Sheet, which has become unreliable since leads are added from multiple sources). Connections Sent (354) and Accepted (51) from LinkedIn's own Manage Invitations / My Network pages. Track split classified by reading the actual first-message text in 30 of 51 accepted conversations (59% real sample, not the tracker) \u2014 Track B is identifiable by its pitch+call-ask pattern (\"with everything that comes with... quick call\" / \"I'll get straight to it... 10-minute call\"), Track A by its curiosity/reaction pattern. Extrapolated from this real sample to the full 51. Campaign window: late August \u2013 October 2026.", "counts": {"connection_sent": 354, "accepted": 51, "warm": 4, "hot": 0, "call_booked": 3, "closed": 0}, "total_outreach": 405, "monthly": {"2026-08": {"sent": 60, "accepted": 13, "calls_booked": 0}, "2026-09": {"sent": 260, "accepted": 35, "calls_booked": 2}, "2026-10": {"sent": 34, "accepted": 3, "calls_booked": 1}}, "track_split": {"sample_size": 30, "sample_total_accepted": 51, "track_a": 22, "track_b": 8, "track_a_pct": 73.3, "track_b_pct": 26.7}, "named_leads": {"accepted": ["Marco Quarta", "Maher Hanafi", "Jin Huang", "Yersultan Jussakinov", "Bakul Banthia", "Jason Lopatecki", "Ryan Seams", "Stephanie J. Neill", "Gerardo Mateo", "Arsen Chaloyan", "Zain Khan", "Rapha\u00ebl Vullierme", "Jaquory Lunsford", "Matthew Pugh", "Balaji Ramaswamy", "Matt Holt", "Joanna Riley", "Zeeshan Khan", "Cassandra Laurence", "Philip Baba", "Harel Boren", "Sohan Karun", "Anu Shukla", "Nick Bogaty", "Alex Tang, CPA, CMA", "Yardley Pohl", "PD Wanjari", "Ameya Bhatawdekar", "Armon Petrossian", "Ray Shan", "Uzi Dutta"], "warm": ["David Urbanic AIGP", "Pallavi Doshi", "Yongsheng Wu", "Arslan Ihsan", "Zahra Badey"], "hot": [], "call_booked": ["Emily Pappas", "Lucas Boreel", "Javier Calderon Jr"], "closed": []}, "rates": {"connection_to_accepted": 14.4, "accepted_to_warm": 9.8, "accepted_to_hot": 0.0, "accepted_to_call": 5.9}, "insights": ["Track split (from a real 59% sample of accepted conversations, read directly off LinkedIn): Track A (warm/curiosity-style) is 73% of accepted leads vs Track B (cold pitch+call) at 27% \u2014 Track A is clearly converting to acceptance at a higher volume.", "Of 5 confirmed warm (genuine two-way) conversations, 4 came from Track A openers with a specific real detail (a post, a title, a career move) \u2014 Track B's direct pitch+call-ask has not yet produced a reply in this sample.", "September was the highest-volume month (35 accepted) as outreach cadence ramped up; October is only 2 days in with 3 accepted and already 1 call booked, pace worth watching.", "Several accepted leads (Yersultan, Jin, Bakul, Nikita, Maher, Ryan Seams, Stephanie Neill, Arsen Chaloyan, Zain Khan, Jaquory Lunsford) have had a first follow-up sent with no reply yet \u2014 due for a second touch per the 7-10 day cadence rule if still silent.", "Connection Sent \u2192 Accepted conversion sits at 14.4% across 354 sent \u2014 useful baseline to track as outreach volume continues."]};
+const _EMBEDDED_DATA = {"generated_at": "2026-10-02T15:30:00", "source_note": "All numbers pulled directly from LinkedIn (not the Sheet \u2014 leads now come from multiple sources so the Sheet is no longer treated as authoritative). Connections Sent (354) and Accepted (51) from LinkedIn's own pages. Weekly accepted-connection counts pulled via LinkedIn's internal API (exact, real dates). Sent/Calls-Booked weekly breakdown isn't available from LinkedIn at this granularity \u2014 shown monthly only, not guessed at weekly. Track split classified by reading the actual first-message text in 35 of 51 accepted conversations (69% real sample) \u2014 Track B identifiable by its pitch+call-ask pattern, Track A by its curiosity/reaction pattern. Campaign window: mid-August \u2013 October 2026.", "counts": {"connection_sent": 354, "accepted": 51, "warm": 4, "hot": 0, "call_booked": 3, "closed": 0}, "total_outreach": 405, "monthly": {"2026-08": {"sent": 60, "accepted": 13, "calls_booked": 0}, "2026-09": {"sent": 260, "accepted": 35, "calls_booked": 2}, "2026-10": {"sent": 34, "accepted": 3, "calls_booked": 1}}, "weekly_accepted": {"2026-08-17": 6, "2026-08-24": 7, "2026-08-31": 0, "2026-09-07": 8, "2026-09-14": 8, "2026-09-21": 12, "2026-09-28": 10}, "track_split": {"sample_size": 35, "sample_total_accepted": 51, "track_a": 26, "track_b": 9, "track_a_pct": 74.3, "track_b_pct": 25.7}, "named_leads": {"accepted": ["Marco Quarta", "Jin Huang", "Bakul Banthia", "Gerardo Mateo", "Zain Khan", "Jaquory Lunsford", "Matthew Pugh", "Balaji Ramaswamy", "Matt Holt", "Joanna Riley", "Zeeshan Khan", "Cassandra Laurence", "Philip Baba", "Sohan Karun", "Anu Shukla", "Nick Bogaty", "Alex Tang, CPA, CMA", "Yardley Pohl", "PD Wanjari", "Ameya Bhatawdekar", "Armon Petrossian", "Ray Shan", "Uzi Dutta"], "warm": ["David Urbanic AIGP", "Pallavi Doshi"], "follow_up_due": ["Maher Hanafi", "Yersultan Jussakinov", "Jason Lopatecki", "Yongsheng Wu", "Ryan Seams", "Stephanie J. Neill", "Arsen Chaloyan", "Rapha\u00ebl Vullierme", "Harel Boren", "Arslan Ihsan", "Zahra Badey"], "hot": [], "call_booked": ["Emily Pappas", "Lucas Boreel", "Javier Calderon Jr"], "closed": []}, "rates": {"connection_to_accepted": 14.4, "accepted_to_warm": 3.9, "accepted_to_hot": 0.0, "accepted_to_call": 5.9}, "insights": ["Track split (69% real sample, read directly off LinkedIn message text): Track A (warm/curiosity-style) is 74% of accepted leads vs Track B (cold pitch+call) at 26% \u2014 Track A is converting to acceptance at notably higher volume.", "Of 2 genuinely active two-way conversations (Warm), both came from Track A openers with a specific real detail \u2014 Track B's direct pitch+call-ask has not produced a reply yet in the sample checked.", "11 accepted leads currently sit in Follow-Up (first touch sent, 3+ days silent) \u2014 due for a second touch per the 7-10 day cadence rule.", "Weekly accepted-connections show a real dip the week of Aug 31 (0 accepted) before climbing to a peak of 12 the week of Sep 21 \u2014 worth checking what changed in outreach volume or targeting that week.", "October is only 2 days in with 3 accepted and already 1 call booked \u2014 pace worth watching as the month continues."]};
 let DATA = _EMBEDDED_DATA;
 
 document.getElementById('updated').innerText = 'Updated ' + new Date(DATA.generated_at).toLocaleString();
@@ -144,9 +140,10 @@ document.getElementById('updated').innerText = 'Updated ' + new Date(DATA.genera
 function renderDashboard(d) {
   document.getElementById('d-total').innerText = d.total_outreach;
   document.getElementById('d-sent').innerText = d.counts.connection_sent;
-  document.getElementById('d-accepted').innerText = d.counts.accepted + d.counts.warm + d.counts.hot + d.counts.call_booked + d.counts.closed;
-  document.getElementById('d-warm').innerText = d.counts.warm + d.counts.hot + d.counts.call_booked + d.counts.closed;
-  document.getElementById('d-hot').innerText = d.counts.hot + d.counts.call_booked + d.counts.closed;
+  const acc = (d.named_leads.accepted||[]).length + (d.named_leads.warm||[]).length + (d.named_leads.follow_up_due||[]).length + d.counts.hot + d.counts.call_booked + d.counts.closed;
+  document.getElementById('d-accepted').innerText = acc;
+  document.getElementById('d-warm').innerText = (d.named_leads.warm||[]).length;
+  document.getElementById('d-hot').innerText = d.counts.hot;
   document.getElementById('d-calls').innerText = d.counts.call_booked + d.counts.closed;
 
   const rates = [
@@ -160,26 +157,18 @@ function renderDashboard(d) {
   ).join('');
 
   const ts = d.track_split;
+  document.getElementById('track-hint').innerText = `based on a ${ts.sample_size}/${ts.sample_total_accepted} real sample read off LinkedIn`;
   document.getElementById('track-chart').innerHTML = `
     <div class="bar-row"><div class="bar-label">Track A (warm)</div><div class="bar-track"><div class="bar-fill trackA" style="width:${ts.track_a_pct}%">${ts.track_a} (${ts.track_a_pct}%)</div></div></div>
     <div class="bar-row"><div class="bar-label">Track B (cold)</div><div class="bar-track"><div class="bar-fill trackB" style="width:${ts.track_b_pct}%">${ts.track_b} (${ts.track_b_pct}%)</div></div></div>
   `;
 }
 
-function renderTrend(d) {
-  const months = Object.keys(d.monthly);
-  const labels = months.map(m => {
-    const [y,mo] = m.split('-');
-    return new Date(y, mo-1).toLocaleString('en', {month:'short'});
-  });
-  const sent = months.map(m => d.monthly[m].sent);
-  const accepted = months.map(m => d.monthly[m].accepted);
-  const calls = months.map(m => d.monthly[m].calls_booked);
-
-  const maxVal = Math.max(...sent, 1);
-  const w = 600, h = 280, padL = 40, padB = 30, padT = 20, padR = 20;
+function drawLineChart(svgEl, labels, series, w) {
+  const h = 280, padL = 40, padB = 30, padT = 20, padR = 20;
   const plotW = w - padL - padR, plotH = h - padT - padB;
-  const stepX = plotW / (months.length - 1 || 1);
+  const stepX = labels.length > 1 ? plotW / (labels.length - 1) : 0;
+  const maxVal = Math.max(1, ...series.flatMap(s => s.values));
 
   function pointsFor(arr) {
     return arr.map((v,i) => {
@@ -190,29 +179,48 @@ function renderTrend(d) {
   }
 
   let svg = '';
-  // gridlines
   for (let i=0;i<=4;i++) {
     const y = padT + (plotH/4)*i;
     svg += `<line x1="${padL}" y1="${y}" x2="${w-padR}" y2="${y}" stroke="#2a2f3b" stroke-width="1"/>`;
   }
-  // x labels
   labels.forEach((lab,i) => {
     const x = padL + i*stepX;
     svg += `<text x="${x}" y="${h-8}" fill="#8b92a5" font-size="11" text-anchor="middle">${lab}</text>`;
   });
-  svg += `<polyline points="${pointsFor(sent)}" fill="none" stroke="#6d8cff" stroke-width="2.5"/>`;
-  svg += `<polyline points="${pointsFor(accepted)}" fill="none" stroke="#36cc7a" stroke-width="2.5"/>`;
-  svg += `<polyline points="${pointsFor(calls)}" fill="none" stroke="#f0c14f" stroke-width="2.5"/>`;
-  [sent,accepted,calls].forEach((arr,ci) => {
-    const color = ['#6d8cff','#36cc7a','#f0c14f'][ci];
-    arr.forEach((v,i) => {
+  series.forEach(s => {
+    svg += `<polyline points="${pointsFor(s.values)}" fill="none" stroke="${s.color}" stroke-width="2.5"/>`;
+    s.values.forEach((v,i) => {
       const x = padL + i*stepX;
       const y = padT + plotH - (v/maxVal)*plotH;
-      svg += `<circle cx="${x}" cy="${y}" r="3.5" fill="${color}"/>`;
-      svg += `<text x="${x}" y="${y-8}" fill="${color}" font-size="10" text-anchor="middle">${v}</text>`;
+      svg += `<circle cx="${x}" cy="${y}" r="3.5" fill="${s.color}"/>`;
+      svg += `<text x="${x}" y="${y-8}" fill="${s.color}" font-size="10" text-anchor="middle">${v}</text>`;
     });
   });
-  document.getElementById('trend-svg').innerHTML = svg;
+  svgEl.setAttribute('viewBox', `0 0 ${w} ${h}`);
+  svgEl.style.width = w + 'px';
+  svgEl.innerHTML = svg;
+}
+
+function renderTrend(d) {
+  const months = Object.keys(d.monthly);
+  const labels = months.map(m => {
+    const [y,mo] = m.split('-');
+    return new Date(y, mo-1).toLocaleString('en', {month:'short'});
+  });
+  drawLineChart(document.getElementById('trend-svg-monthly'), labels, [
+    {values: months.map(m => d.monthly[m].sent), color:'#6d8cff'},
+    {values: months.map(m => d.monthly[m].accepted), color:'#36cc7a'},
+    {values: months.map(m => d.monthly[m].calls_booked), color:'#f0c14f'},
+  ], Math.max(600, months.length*120));
+
+  const weeks = Object.keys(d.weekly_accepted).sort();
+  const wLabels = weeks.map(w => {
+    const dt = new Date(w);
+    return (dt.getMonth()+1) + '/' + dt.getDate();
+  });
+  drawLineChart(document.getElementById('trend-svg-weekly'), wLabels, [
+    {values: weeks.map(w => d.weekly_accepted[w]), color:'#36cc7a'},
+  ], Math.max(600, weeks.length*90));
 }
 
 function renderKanban(d, filterText='') {
@@ -223,11 +231,12 @@ function renderKanban(d, filterText='') {
       names = names.filter(n => n.toLowerCase().includes(f));
     }
     const cards = names.map(n => `<div class="lead-card"><div class="name">${n}</div></div>`).join('');
+    const count = (d.named_leads[stage]||[]).length;
     return `
       <div class="col">
         <div class="col-head" style="background:${STAGE_COLORS[stage]}">
           <div class="title">${STAGE_LABELS[stage]}</div>
-          <div class="count">${d.counts[stage]} leads</div>
+          <div class="count">${count} leads</div>
         </div>
         <div class="col-body">${cards || '<div style="color:var(--muted);font-size:12px">Empty</div>'}</div>
       </div>
