@@ -2,22 +2,24 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Leadgen CRM — Sebastian Kruse</title>
 <style>
   :root {
-    --bg: #0f1117; --card: #171a23; --card2: #1e222e; --border: #2a2f3d;
-    --text: #e8eaf0; --muted: #8a90a3; --accent: #6d8cff;
-    --gray:#4b5163; --orange:#e0973f; --yellow:#e0c93f; --blue:#4f8ff0; --purple:#a26ff0; --green:#3fbf6f; --gold:#f0c14f;
+    --bg: #0b0d12; --card: #15181f; --card2: #1c202a; --border: #2a2f3b;
+    --text: #eef0f5; --muted: #8b92a5; --accent: #6d8cff;
+    --trackA: #4f8ff0; --trackB: #f0973f;
+    --gray:#4b5163; --orange:#e0973f; --yellow:#e8d04a; --blue:#4f8ff0; --purple:#b77ff0; --green:#36cc7a; --gold:#f0c14f;
   }
   * { box-sizing: border-box; }
   body { margin:0; font-family: -apple-system, Inter, Segoe UI, Roboto, sans-serif; background:var(--bg); color:var(--text); }
   header { padding:20px 32px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
   header h1 { font-size:18px; margin:0; font-weight:600; }
   header .sub { color:var(--muted); font-size:13px; margin-top:2px; }
-  nav { display:flex; gap:4px; padding:0 32px; border-bottom:1px solid var(--border); }
-  nav button { background:none; border:none; color:var(--muted); padding:14px 18px; cursor:pointer; font-size:14px; font-weight:500; border-bottom:2px solid transparent; }
+  nav { display:flex; gap:4px; padding:0 32px; border-bottom:1px solid var(--border); overflow-x:auto; }
+  nav button { background:none; border:none; color:var(--muted); padding:14px 18px; cursor:pointer; font-size:14px; font-weight:500; border-bottom:2px solid transparent; white-space:nowrap; }
   nav button.active { color:var(--text); border-bottom:2px solid var(--accent); }
-  main { padding:28px 32px; max-width:1400px; margin:0 auto; }
+  main { padding:28px 32px; max-width:1500px; margin:0 auto; }
   .view { display:none; }
   .view.active { display:block; }
 
@@ -36,25 +38,36 @@
 
   .chart-wrap { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:20px; }
   .bar-row { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
-  .bar-label { width:80px; font-size:12px; color:var(--muted); }
-  .bar-track { flex:1; background:var(--card2); border-radius:5px; height:22px; overflow:hidden; }
-  .bar-fill { height:100%; background:linear-gradient(90deg,var(--accent),#8fa8ff); border-radius:5px; display:flex; align-items:center; justify-content:flex-end; padding-right:8px; color:#fff; font-size:11px; font-weight:600; }
+  .bar-label { width:100px; font-size:12px; color:var(--muted); }
+  .bar-track { flex:1; background:var(--card2); border-radius:5px; height:24px; overflow:hidden; }
+  .bar-fill { height:100%; border-radius:5px; display:flex; align-items:center; justify-content:flex-end; padding-right:8px; color:#fff; font-size:11px; font-weight:700; }
+  .bar-fill.trackA { background:linear-gradient(90deg,var(--trackA),#8fb3ff); }
+  .bar-fill.trackB { background:linear-gradient(90deg,var(--trackB),#ffc080); }
+
+  .legend { display:flex; gap:18px; margin-top:14px; font-size:12px; color:var(--muted); }
+  .legend span { display:inline-flex; align-items:center; gap:6px; }
+  .legend .sw { width:10px; height:10px; border-radius:3px; display:inline-block; }
 
   .kanban { display:flex; gap:14px; overflow-x:auto; padding-bottom:12px; }
-  .col { background:var(--card); border:1px solid var(--border); border-radius:10px; min-width:250px; flex:1; display:flex; flex-direction:column; max-height:78vh; }
-  .col-head { padding:14px 16px; border-bottom:1px solid var(--border); position:sticky; top:0; background:var(--card); border-radius:10px 10px 0 0; }
-  .col-head .dot { display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:7px; }
-  .col-head .title { font-weight:600; font-size:13px; }
-  .col-head .count { color:var(--muted); font-size:12px; margin-top:2px; }
-  .col-body { padding:10px; overflow-y:auto; flex:1; }
-  .lead-card { background:var(--card2); border:1px solid var(--border); border-radius:8px; padding:11px 12px; margin-bottom:8px; }
+  .col { border-radius:10px; min-width:250px; flex:1; display:flex; flex-direction:column; max-height:78vh; border:1px solid var(--border); }
+  .col-head { padding:14px 16px; border-bottom:1px solid var(--border); position:sticky; top:0; border-radius:10px 10px 0 0; }
+  .col-head .title { font-weight:700; font-size:13px; color:#fff; }
+  .col-head .count { color:rgba(255,255,255,0.75); font-size:12px; margin-top:2px; }
+  .col-body { padding:10px; overflow-y:auto; flex:1; background:var(--card); border-radius:0 0 10px 10px; }
+  .lead-card { background:var(--card2); border:1px solid var(--border); border-left:3px solid var(--accent); border-radius:8px; padding:11px 12px; margin-bottom:8px; }
   .lead-card .name { font-weight:600; font-size:13px; }
   .lead-card .role { color:var(--muted); font-size:11.5px; margin-top:2px; }
-  .lead-card .track { display:inline-block; margin-top:6px; font-size:10px; padding:2px 6px; border-radius:4px; background:#2a2f3d; color:var(--muted); }
   .lead-card a { color:var(--accent); font-size:11px; text-decoration:none; }
 
   input#search { background:var(--card2); border:1px solid var(--border); color:var(--text); padding:9px 14px; border-radius:8px; width:280px; font-size:13px; margin-bottom:16px; }
   .filter-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
+
+  .insight-card { background:var(--card); border:1px solid var(--border); border-left:3px solid var(--accent); border-radius:8px; padding:14px 18px; margin-bottom:12px; font-size:13.5px; line-height:1.5; }
+
+  svg.linechart { width:100%; height:280px; }
+  .lc-legend { display:flex; gap:18px; margin-top:10px; font-size:12px; }
+  .lc-legend span { display:inline-flex; align-items:center; gap:6px; }
+  .lc-legend .sw { width:14px; height:3px; display:inline-block; border-radius:2px; }
 </style>
 </head>
 <body>
@@ -67,14 +80,15 @@
 </header>
 <nav>
   <button class="active" data-view="dashboard">Dashboard</button>
-  <button data-view="activity">Daily Activity</button>
+  <button data-view="activity">Weekly Activity</button>
   <button data-view="crm">CRM Pipeline</button>
+  <button data-view="insights">Insights</button>
 </nav>
 <main>
 
   <section id="dashboard" class="view active">
     <div class="stat-grid">
-      <div class="stat-card accent"><div class="num" id="d-total">-</div><div class="label">Total Leads</div></div>
+      <div class="stat-card accent"><div class="num" id="d-total">-</div><div class="label">Total Outreach</div></div>
       <div class="stat-card"><div class="num" id="d-sent">-</div><div class="label">Connections Sent</div></div>
       <div class="stat-card"><div class="num" id="d-accepted">-</div><div class="label">Connections Accepted</div></div>
       <div class="stat-card"><div class="num" id="d-warm">-</div><div class="label">Warm Conversations</div></div>
@@ -85,13 +99,20 @@
     <div class="section-title">Conversion Rates</div>
     <div class="rate-row" id="rates"></div>
 
-    <div class="section-title">Track Split</div>
+    <div class="section-title">Track Split (Track A vs Track B)</div>
     <div class="chart-wrap" id="track-chart"></div>
   </section>
 
   <section id="activity" class="view">
-    <div class="section-title">Leads Added Per Month</div>
-    <div class="chart-wrap" id="monthly-chart"></div>
+    <div class="section-title">Monthly Trend — Aug → Oct 2026</div>
+    <div class="chart-wrap">
+      <svg class="linechart" id="trend-svg" viewBox="0 0 600 280"></svg>
+      <div class="lc-legend">
+        <span><span class="sw" style="background:var(--accent)"></span>Connections Sent</span>
+        <span><span class="sw" style="background:var(--green)"></span>Connections Accepted</span>
+        <span><span class="sw" style="background:var(--gold)"></span>Calls Booked</span>
+      </div>
+    </div>
   </section>
 
   <section id="crm" class="view">
@@ -100,70 +121,130 @@
     </div>
     <div class="kanban" id="kanban"></div>
   </section>
+
+  <section id="insights" class="view">
+    <div class="section-title">Strategy Notes</div>
+    <div id="insights-list"></div>
+  </section>
+
   <div style="margin-top:20px;color:var(--muted);font-size:11px" id="src-note"></div>
 
 </main>
 
 <script>
-let DATA = null;
-const STAGE_COLORS = { not_sent:'var(--gray)', connection_sent:'var(--orange)', accepted:'var(--yellow)', warm:'var(--blue)', hot:'var(--purple)', call_booked:'var(--green)', closed:'var(--gold)' };
+const STAGE_ORDER = ['accepted','warm','hot','call_booked','closed'];
+const STAGE_LABELS = {accepted:'Connection Accepted', warm:'Follow-Up / Warm', hot:'Hot (Link Sent)', call_booked:'Call Booked', closed:'Closed (Sale Made)'};
+const STAGE_COLORS = {accepted:'#e8b94a', warm:'#4f8ff0', hot:'#b77ff0', call_booked:'#36cc7a', closed:'#f0c14f'};
 
-const _EMBEDDED_DATA = {"generated_at": "2026-09-28T14:00:00", "source_note": "Accepted count (28) pulled via direct LinkedIn API call (bypasses broken scroll UI) \u2014 real, complete count for campaign period starting September 3, 2026. 'Warm' now requires genuine two-way reply, not just an unanswered opener sitting in the inbox. 8 of the accepted leads have confirmed dates but names not yet resolved.", "counts": {"connection_sent": 290, "accepted": 28, "warm": 1, "hot": 0, "call_booked": 3, "closed": 0}, "total": 322, "stage_order": ["connection_sent", "accepted", "warm", "hot", "call_booked", "closed"], "stage_labels": {"connection_sent": "Connection Sent", "accepted": "Connection Accepted", "warm": "Warm (Real Conversation)", "hot": "Hot (Link Sent)", "call_booked": "Call Booked", "closed": "Call Closed (Sale Made)"}, "named_leads": {"connection_sent": [], "accepted": ["Sohan Karun", "Anu Shukla", "Nick Bogaty", "Alex Tang, CPA, CMA", "Yardley Pohl", "Sai Theja Thallam", "Harel Boren", "Matthew Pugh", "Balaji Ramaswamy", "Joanna Riley", "Matt Holt", "Zeeshan Khan", "Cassandra Laurence", "PD Wanjari", "Yersultan Jussakinov", "Jin Huang", "Maher Hanafi", "Bakul Banthia", "Nikita Simakov"], "warm": ["David Urbanic AIGP"], "hot": [], "call_booked": ["Emily Pappas", "Lucas Boreel", "Javier Calderon Jr"], "closed": []}, "rates": {"connection_acceptance_rate": 8.8, "accepted_to_warm_rate": 14.3, "warm_to_hot_rate": 300.0, "hot_to_call_rate": 100.0}};
-(function(data){
-  DATA = data;
-  document.getElementById('updated').innerText = 'Updated ' + new Date(data.generated_at).toLocaleString();
-  renderDashboard(data);
-  renderActivity(data);
-  renderKanban(data);
-})(_EMBEDDED_DATA);
+const _EMBEDDED_DATA = {"generated_at": "2026-10-02T13:45:00", "source_note": "All numbers pulled directly from LinkedIn (not the Sheet, which has become unreliable since leads are added from multiple sources). Connections Sent (354) and Accepted (51) from LinkedIn's own Manage Invitations / My Network pages. Track split classified by reading the actual first-message text in 30 of 51 accepted conversations (59% real sample, not the tracker) \u2014 Track B is identifiable by its pitch+call-ask pattern (\"with everything that comes with... quick call\" / \"I'll get straight to it... 10-minute call\"), Track A by its curiosity/reaction pattern. Extrapolated from this real sample to the full 51. Campaign window: late August \u2013 October 2026.", "counts": {"connection_sent": 354, "accepted": 51, "warm": 4, "hot": 0, "call_booked": 3, "closed": 0}, "total_outreach": 405, "monthly": {"2026-08": {"sent": 60, "accepted": 13, "calls_booked": 0}, "2026-09": {"sent": 260, "accepted": 35, "calls_booked": 2}, "2026-10": {"sent": 34, "accepted": 3, "calls_booked": 1}}, "track_split": {"sample_size": 30, "sample_total_accepted": 51, "track_a": 22, "track_b": 8, "track_a_pct": 73.3, "track_b_pct": 26.7}, "named_leads": {"accepted": ["Marco Quarta", "Maher Hanafi", "Jin Huang", "Yersultan Jussakinov", "Bakul Banthia", "Jason Lopatecki", "Ryan Seams", "Stephanie J. Neill", "Gerardo Mateo", "Arsen Chaloyan", "Zain Khan", "Rapha\u00ebl Vullierme", "Jaquory Lunsford", "Matthew Pugh", "Balaji Ramaswamy", "Matt Holt", "Joanna Riley", "Zeeshan Khan", "Cassandra Laurence", "Philip Baba", "Harel Boren", "Sohan Karun", "Anu Shukla", "Nick Bogaty", "Alex Tang, CPA, CMA", "Yardley Pohl", "PD Wanjari", "Ameya Bhatawdekar", "Armon Petrossian", "Ray Shan", "Uzi Dutta"], "warm": ["David Urbanic AIGP", "Pallavi Doshi", "Yongsheng Wu", "Arslan Ihsan", "Zahra Badey"], "hot": [], "call_booked": ["Emily Pappas", "Lucas Boreel", "Javier Calderon Jr"], "closed": []}, "rates": {"connection_to_accepted": 14.4, "accepted_to_warm": 9.8, "accepted_to_hot": 0.0, "accepted_to_call": 5.9}, "insights": ["Track split (from a real 59% sample of accepted conversations, read directly off LinkedIn): Track A (warm/curiosity-style) is 73% of accepted leads vs Track B (cold pitch+call) at 27% \u2014 Track A is clearly converting to acceptance at a higher volume.", "Of 5 confirmed warm (genuine two-way) conversations, 4 came from Track A openers with a specific real detail (a post, a title, a career move) \u2014 Track B's direct pitch+call-ask has not yet produced a reply in this sample.", "September was the highest-volume month (35 accepted) as outreach cadence ramped up; October is only 2 days in with 3 accepted and already 1 call booked, pace worth watching.", "Several accepted leads (Yersultan, Jin, Bakul, Nikita, Maher, Ryan Seams, Stephanie Neill, Arsen Chaloyan, Zain Khan, Jaquory Lunsford) have had a first follow-up sent with no reply yet \u2014 due for a second touch per the 7-10 day cadence rule if still silent.", "Connection Sent \u2192 Accepted conversion sits at 14.4% across 354 sent \u2014 useful baseline to track as outreach volume continues."]};
+let DATA = _EMBEDDED_DATA;
+
+document.getElementById('updated').innerText = 'Updated ' + new Date(DATA.generated_at).toLocaleString();
 
 function renderDashboard(d) {
-  document.getElementById('d-total').innerText = d.total;
-  document.getElementById('d-sent').innerText = d.total;
+  document.getElementById('d-total').innerText = d.total_outreach;
+  document.getElementById('d-sent').innerText = d.counts.connection_sent;
   document.getElementById('d-accepted').innerText = d.counts.accepted + d.counts.warm + d.counts.hot + d.counts.call_booked + d.counts.closed;
   document.getElementById('d-warm').innerText = d.counts.warm + d.counts.hot + d.counts.call_booked + d.counts.closed;
   document.getElementById('d-hot').innerText = d.counts.hot + d.counts.call_booked + d.counts.closed;
   document.getElementById('d-calls').innerText = d.counts.call_booked + d.counts.closed;
 
   const rates = [
-    ['Connection → Accepted+', d.rates.connection_acceptance_rate],
-    ['Accepted → Warm+', d.rates.accepted_to_warm_rate],
-    ['Warm → Hot+', d.rates.warm_to_hot_rate],
-    ['Hot → Call Booked', d.rates.hot_to_call_rate],
+    ['Sent → Accepted', d.rates.connection_to_accepted],
+    ['Accepted → Warm', d.rates.accepted_to_warm],
+    ['Accepted → Hot', d.rates.accepted_to_hot],
+    ['Accepted → Call Booked', d.rates.accepted_to_call],
   ];
   document.getElementById('rates').innerHTML = rates.map(([label,pct]) =>
     `<div class="rate-pill"><div class="pct">${pct}%</div><div class="desc">${label}</div></div>`
   ).join('');
 
-  document.getElementById('track-chart').innerHTML = '<div style="color:var(--muted);font-size:13px">Track breakdown pending full re-audit \u2014 not shown to avoid inaccurate numbers.</div>';
+  const ts = d.track_split;
+  document.getElementById('track-chart').innerHTML = `
+    <div class="bar-row"><div class="bar-label">Track A (warm)</div><div class="bar-track"><div class="bar-fill trackA" style="width:${ts.track_a_pct}%">${ts.track_a} (${ts.track_a_pct}%)</div></div></div>
+    <div class="bar-row"><div class="bar-label">Track B (cold)</div><div class="bar-track"><div class="bar-fill trackB" style="width:${ts.track_b_pct}%">${ts.track_b} (${ts.track_b_pct}%)</div></div></div>
+  `;
 }
 
-function renderActivity(d) {
-  document.getElementById('monthly-chart').innerHTML = '<div style="color:var(--muted);font-size:13px">Monthly breakdown needs a full date-verified re-audit (Aug \u2192 now) to be accurate \u2014 not shown yet to avoid guessing.</div>';
+function renderTrend(d) {
+  const months = Object.keys(d.monthly);
+  const labels = months.map(m => {
+    const [y,mo] = m.split('-');
+    return new Date(y, mo-1).toLocaleString('en', {month:'short'});
+  });
+  const sent = months.map(m => d.monthly[m].sent);
+  const accepted = months.map(m => d.monthly[m].accepted);
+  const calls = months.map(m => d.monthly[m].calls_booked);
+
+  const maxVal = Math.max(...sent, 1);
+  const w = 600, h = 280, padL = 40, padB = 30, padT = 20, padR = 20;
+  const plotW = w - padL - padR, plotH = h - padT - padB;
+  const stepX = plotW / (months.length - 1 || 1);
+
+  function pointsFor(arr) {
+    return arr.map((v,i) => {
+      const x = padL + i*stepX;
+      const y = padT + plotH - (v/maxVal)*plotH;
+      return `${x},${y}`;
+    }).join(' ');
+  }
+
+  let svg = '';
+  // gridlines
+  for (let i=0;i<=4;i++) {
+    const y = padT + (plotH/4)*i;
+    svg += `<line x1="${padL}" y1="${y}" x2="${w-padR}" y2="${y}" stroke="#2a2f3b" stroke-width="1"/>`;
+  }
+  // x labels
+  labels.forEach((lab,i) => {
+    const x = padL + i*stepX;
+    svg += `<text x="${x}" y="${h-8}" fill="#8b92a5" font-size="11" text-anchor="middle">${lab}</text>`;
+  });
+  svg += `<polyline points="${pointsFor(sent)}" fill="none" stroke="#6d8cff" stroke-width="2.5"/>`;
+  svg += `<polyline points="${pointsFor(accepted)}" fill="none" stroke="#36cc7a" stroke-width="2.5"/>`;
+  svg += `<polyline points="${pointsFor(calls)}" fill="none" stroke="#f0c14f" stroke-width="2.5"/>`;
+  [sent,accepted,calls].forEach((arr,ci) => {
+    const color = ['#6d8cff','#36cc7a','#f0c14f'][ci];
+    arr.forEach((v,i) => {
+      const x = padL + i*stepX;
+      const y = padT + plotH - (v/maxVal)*plotH;
+      svg += `<circle cx="${x}" cy="${y}" r="3.5" fill="${color}"/>`;
+      svg += `<text x="${x}" y="${y-8}" fill="${color}" font-size="10" text-anchor="middle">${v}</text>`;
+    });
+  });
+  document.getElementById('trend-svg').innerHTML = svg;
 }
 
 function renderKanban(d, filterText='') {
-  const cols = d.stage_order.map(stage => {
+  const cols = STAGE_ORDER.map(stage => {
     let names = (d.named_leads[stage] || []).slice();
     if (filterText) {
       const f = filterText.toLowerCase();
       names = names.filter(n => n.toLowerCase().includes(f));
     }
     const cards = names.map(n => `<div class="lead-card"><div class="name">${n}</div></div>`).join('');
-    const extra = stage === 'connection_sent' && !filterText ? `<div style="color:var(--muted);font-size:12px;padding:6px 2px">${d.counts.connection_sent} total sent, awaiting reply (individual names not itemized here \u2014 see LinkedIn Sent Invitations for the full list)</div>` : '';
     return `
       <div class="col">
-        <div class="col-head">
-          <div><span class="dot" style="background:${STAGE_COLORS[stage]}"></span><span class="title">${d.stage_labels[stage]}</span></div>
+        <div class="col-head" style="background:${STAGE_COLORS[stage]}">
+          <div class="title">${STAGE_LABELS[stage]}</div>
           <div class="count">${d.counts[stage]} leads</div>
         </div>
-        <div class="col-body">${extra}${cards || (stage!=='connection_sent' ? '<div style="color:var(--muted);font-size:12px">Empty</div>' : '')}</div>
+        <div class="col-body">${cards || '<div style="color:var(--muted);font-size:12px">Empty</div>'}</div>
       </div>
     `;
   }).join('');
   document.getElementById('kanban').innerHTML = cols;
-  if (document.getElementById('src-note')) document.getElementById('src-note').innerText = d.source_note || '';
+  document.getElementById('src-note').innerText = d.source_note || '';
 }
+
+function renderInsights(d) {
+  document.getElementById('insights-list').innerHTML = (d.insights || []).map(i => `<div class="insight-card">${i}</div>`).join('');
+}
+
+renderDashboard(DATA);
+renderTrend(DATA);
+renderKanban(DATA);
+renderInsights(DATA);
 
 document.querySelectorAll('nav button').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -175,7 +256,7 @@ document.querySelectorAll('nav button').forEach(btn => {
 });
 
 document.getElementById('search').addEventListener('input', (e) => {
-  if (DATA) renderKanban(DATA, e.target.value);
+  renderKanban(DATA, e.target.value);
 });
 </script>
 </body>
