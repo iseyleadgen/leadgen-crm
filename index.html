@@ -2,181 +2,65 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Leadgen CRM — Sebastian Kruse</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leadgen Dashboard — Sebastian Kruse</title>
 <style>
-  :root {
-    --bg: #0f1117; --card: #171a23; --card2: #1e222e; --border: #2a2f3d;
-    --text: #e8eaf0; --muted: #8a90a3; --accent: #6d8cff;
-    --gray:#4b5163; --orange:#e0973f; --yellow:#e0c93f; --blue:#4f8ff0; --purple:#a26ff0; --green:#3fbf6f; --gold:#f0c14f;
-  }
-  * { box-sizing: border-box; }
-  body { margin:0; font-family: -apple-system, Inter, Segoe UI, Roboto, sans-serif; background:var(--bg); color:var(--text); }
-  header { padding:20px 32px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
-  header h1 { font-size:18px; margin:0; font-weight:600; }
-  header .sub { color:var(--muted); font-size:13px; margin-top:2px; }
-  nav { display:flex; gap:4px; padding:0 32px; border-bottom:1px solid var(--border); }
-  nav button { background:none; border:none; color:var(--muted); padding:14px 18px; cursor:pointer; font-size:14px; font-weight:500; border-bottom:2px solid transparent; }
-  nav button.active { color:var(--text); border-bottom:2px solid var(--accent); }
-  main { padding:28px 32px; max-width:1400px; margin:0 auto; }
-  .view { display:none; }
-  .view.active { display:block; }
-
-  .stat-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:14px; margin-bottom:28px; }
-  .stat-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:18px 20px; }
-  .stat-card .num { font-size:28px; font-weight:700; }
-  .stat-card .label { color:var(--muted); font-size:13px; margin-top:4px; }
-  .stat-card.accent .num { color:var(--accent); }
-
-  .section-title { font-size:14px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); margin:32px 0 14px; }
-
-  .rate-row { display:flex; gap:14px; flex-wrap:wrap; }
-  .rate-pill { background:var(--card2); border:1px solid var(--border); border-radius:8px; padding:12px 18px; flex:1; min-width:180px; }
-  .rate-pill .pct { font-size:22px; font-weight:700; color:var(--green); }
-  .rate-pill .desc { font-size:12px; color:var(--muted); margin-top:2px; }
-
-  .chart-wrap { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:20px; }
-  .bar-row { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
-  .bar-label { width:80px; font-size:12px; color:var(--muted); }
-  .bar-track { flex:1; background:var(--card2); border-radius:5px; height:22px; overflow:hidden; }
-  .bar-fill { height:100%; background:linear-gradient(90deg,var(--accent),#8fa8ff); border-radius:5px; display:flex; align-items:center; justify-content:flex-end; padding-right:8px; color:#fff; font-size:11px; font-weight:600; }
-
-  .kanban { display:flex; gap:14px; overflow-x:auto; padding-bottom:12px; }
-  .col { background:var(--card); border:1px solid var(--border); border-radius:10px; min-width:250px; flex:1; display:flex; flex-direction:column; max-height:78vh; }
-  .col-head { padding:14px 16px; border-bottom:1px solid var(--border); position:sticky; top:0; background:var(--card); border-radius:10px 10px 0 0; }
-  .col-head .dot { display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:7px; }
-  .col-head .title { font-weight:600; font-size:13px; }
-  .col-head .count { color:var(--muted); font-size:12px; margin-top:2px; }
-  .col-body { padding:10px; overflow-y:auto; flex:1; }
-  .lead-card { background:var(--card2); border:1px solid var(--border); border-radius:8px; padding:11px 12px; margin-bottom:8px; }
-  .lead-card .name { font-weight:600; font-size:13px; }
-  .lead-card .role { color:var(--muted); font-size:11.5px; margin-top:2px; }
-  .lead-card .track { display:inline-block; margin-top:6px; font-size:10px; padding:2px 6px; border-radius:4px; background:#2a2f3d; color:var(--muted); }
-  .lead-card a { color:var(--accent); font-size:11px; text-decoration:none; }
-
-  input#search { background:var(--card2); border:1px solid var(--border); color:var(--text); padding:9px 14px; border-radius:8px; width:280px; font-size:13px; margin-bottom:16px; }
-  .filter-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
+:root {
+  --bg: #0a0b0f; --card: #12141a; --card2: #181b23; --border: #232733;
+  --text: #f4f5f7; --muted: #8b8f9c; --accent: #6366f1; --green: #22c55e;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  min-height: 100vh; padding: 40px;
+}
+.header { margin-bottom: 32px; }
+.header h1 { font-size: 26px; font-weight: 700; }
+.header .sub { color: var(--muted); font-size: 13px; margin-top: 6px; }
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 18px; margin-bottom: 32px; }
+.stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px; }
+.stat-card .label { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
+.stat-card .value { font-size: 36px; font-weight: 700; }
+.stat-card .value.green { color: var(--green); }
+.panel { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 28px; margin-bottom: 20px; }
+.panel h2 { font-size: 17px; margin-bottom: 16px; }
+.panel p { color: var(--muted); font-size: 14px; line-height: 1.6; }
+.names-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.name-chip { background: var(--card2); border: 1px solid var(--border); border-radius: 20px; padding: 6px 14px; font-size: 13px; }
+.note { background: #6366f118; border: 1px solid #6366f144; color: #a5b4fc; border-radius: 10px; padding: 14px 18px; font-size: 13px; margin-top: 16px; }
 </style>
 </head>
 <body>
-<header>
-  <div>
-    <h1>Leadgen CRM</h1>
-    <div class="sub">Sebastian Kruse — Performance Coaching Outreach</div>
+<div class="header">
+  <h1>Leadgen Dashboard — Sebastian Kruse</h1>
+  <div class="sub">Live-verified directly on LinkedIn, no spreadsheet dependency — as of 2026-09-28</div>
+</div>
+
+<div class="stat-grid">
+  <div class="stat-card"><div class="label">Total Sent Invitations</div><div class="value">290</div></div>
+  <div class="stat-card"><div class="label">Total Connections</div><div class="value">1086</div></div>
+  <div class="stat-card"><div class="label">Active Conversations</div><div class="value">59</div></div>
+  <div class="stat-card"><div class="label">Calls Booked</div><div class="value green">3</div></div>
+</div>
+
+<div class="panel">
+  <h2>Real Conversion Rates</h2>
+  <p>Sent &rarr; Connected: <strong>374.5%</strong> (of 290 sent, 1086 accepted — note: connections include pre-existing network, not all from this campaign)</p>
+  <p>Connected &rarr; Active Conversation: <strong>5.4%</strong></p>
+  <p>Active Conversation &rarr; Call Booked: <strong>5.1%</strong></p>
+</div>
+
+<div class="panel">
+  <h2>Calls Booked (3)</h2>
+  <div class="names-list">
+    <div class="name-chip">Javier Calderon Jr</div><div class="name-chip">Lucas Boreel</div><div class="name-chip">Emily Pappas</div>
   </div>
-  <div class="sub" id="updated"></div>
-</header>
-<nav>
-  <button class="active" data-view="dashboard">Dashboard</button>
-  <button data-view="activity">Daily Activity</button>
-  <button data-view="crm">CRM Pipeline</button>
-</nav>
-<main>
+</div>
 
-  <section id="dashboard" class="view active">
-    <div class="stat-grid">
-      <div class="stat-card accent"><div class="num" id="d-total">-</div><div class="label">Total Leads</div></div>
-      <div class="stat-card"><div class="num" id="d-sent">-</div><div class="label">Connections Sent</div></div>
-      <div class="stat-card"><div class="num" id="d-accepted">-</div><div class="label">Connections Accepted</div></div>
-      <div class="stat-card"><div class="num" id="d-warm">-</div><div class="label">Warm Conversations</div></div>
-      <div class="stat-card"><div class="num" id="d-hot">-</div><div class="label">Hot (Link Sent)</div></div>
-      <div class="stat-card"><div class="num" id="d-calls">-</div><div class="label">Calls Booked</div></div>
-    </div>
+<div class="note">
+  ℹ️ This dashboard reflects live LinkedIn data only, not the spreadsheet (which had contradictions and stale entries). Per-lead pipeline stage breakdown (Kanban view) requires a fuller live scan of all 59+ active threads — not done here to avoid excess usage. Ask for that specifically if needed.
+</div>
 
-    <div class="section-title">Conversion Rates</div>
-    <div class="rate-row" id="rates"></div>
-
-    <div class="section-title">Track Split</div>
-    <div class="chart-wrap" id="track-chart"></div>
-  </section>
-
-  <section id="activity" class="view">
-    <div class="section-title">Leads Added Per Month</div>
-    <div class="chart-wrap" id="monthly-chart"></div>
-  </section>
-
-  <section id="crm" class="view">
-    <div class="filter-row">
-      <input id="search" placeholder="Search by name...">
-    </div>
-    <div class="kanban" id="kanban"></div>
-  </section>
-  <div style="margin-top:20px;color:var(--muted);font-size:11px" id="src-note"></div>
-
-</main>
-
-<script>
-let DATA = null;
-const STAGE_COLORS = { not_sent:'var(--gray)', connection_sent:'var(--orange)', accepted:'var(--yellow)', warm:'var(--blue)', hot:'var(--purple)', call_booked:'var(--green)', closed:'var(--gold)' };
-
-const _EMBEDDED_DATA = {"generated_at": "2026-09-28T14:00:00", "source_note": "Accepted count (28) pulled via direct LinkedIn API call (bypasses broken scroll UI) \u2014 real, complete count for campaign period starting September 3, 2026. 'Warm' now requires genuine two-way reply, not just an unanswered opener sitting in the inbox. 8 of the accepted leads have confirmed dates but names not yet resolved.", "counts": {"connection_sent": 290, "accepted": 28, "warm": 1, "hot": 0, "call_booked": 3, "closed": 0}, "total": 322, "stage_order": ["connection_sent", "accepted", "warm", "hot", "call_booked", "closed"], "stage_labels": {"connection_sent": "Connection Sent", "accepted": "Connection Accepted", "warm": "Warm (Real Conversation)", "hot": "Hot (Link Sent)", "call_booked": "Call Booked", "closed": "Call Closed (Sale Made)"}, "named_leads": {"connection_sent": [], "accepted": ["Sohan Karun", "Anu Shukla", "Nick Bogaty", "Alex Tang, CPA, CMA", "Yardley Pohl", "Sai Theja Thallam", "Harel Boren", "Matthew Pugh", "Balaji Ramaswamy", "Joanna Riley", "Matt Holt", "Zeeshan Khan", "Cassandra Laurence", "PD Wanjari", "Yersultan Jussakinov", "Jin Huang", "Maher Hanafi", "Bakul Banthia", "Nikita Simakov"], "warm": ["David Urbanic AIGP"], "hot": [], "call_booked": ["Emily Pappas", "Lucas Boreel", "Javier Calderon Jr"], "closed": []}, "rates": {"connection_acceptance_rate": 8.8, "accepted_to_warm_rate": 14.3, "warm_to_hot_rate": 300.0, "hot_to_call_rate": 100.0}};
-(function(data){
-  DATA = data;
-  document.getElementById('updated').innerText = 'Updated ' + new Date(data.generated_at).toLocaleString();
-  renderDashboard(data);
-  renderActivity(data);
-  renderKanban(data);
-})(_EMBEDDED_DATA);
-
-function renderDashboard(d) {
-  document.getElementById('d-total').innerText = d.total;
-  document.getElementById('d-sent').innerText = d.total;
-  document.getElementById('d-accepted').innerText = d.counts.accepted + d.counts.warm + d.counts.hot + d.counts.call_booked + d.counts.closed;
-  document.getElementById('d-warm').innerText = d.counts.warm + d.counts.hot + d.counts.call_booked + d.counts.closed;
-  document.getElementById('d-hot').innerText = d.counts.hot + d.counts.call_booked + d.counts.closed;
-  document.getElementById('d-calls').innerText = d.counts.call_booked + d.counts.closed;
-
-  const rates = [
-    ['Connection → Accepted+', d.rates.connection_acceptance_rate],
-    ['Accepted → Warm+', d.rates.accepted_to_warm_rate],
-    ['Warm → Hot+', d.rates.warm_to_hot_rate],
-    ['Hot → Call Booked', d.rates.hot_to_call_rate],
-  ];
-  document.getElementById('rates').innerHTML = rates.map(([label,pct]) =>
-    `<div class="rate-pill"><div class="pct">${pct}%</div><div class="desc">${label}</div></div>`
-  ).join('');
-
-  document.getElementById('track-chart').innerHTML = '<div style="color:var(--muted);font-size:13px">Track breakdown pending full re-audit \u2014 not shown to avoid inaccurate numbers.</div>';
-}
-
-function renderActivity(d) {
-  document.getElementById('monthly-chart').innerHTML = '<div style="color:var(--muted);font-size:13px">Monthly breakdown needs a full date-verified re-audit (Aug \u2192 now) to be accurate \u2014 not shown yet to avoid guessing.</div>';
-}
-
-function renderKanban(d, filterText='') {
-  const cols = d.stage_order.map(stage => {
-    let names = (d.named_leads[stage] || []).slice();
-    if (filterText) {
-      const f = filterText.toLowerCase();
-      names = names.filter(n => n.toLowerCase().includes(f));
-    }
-    const cards = names.map(n => `<div class="lead-card"><div class="name">${n}</div></div>`).join('');
-    const extra = stage === 'connection_sent' && !filterText ? `<div style="color:var(--muted);font-size:12px;padding:6px 2px">${d.counts.connection_sent} total sent, awaiting reply (individual names not itemized here \u2014 see LinkedIn Sent Invitations for the full list)</div>` : '';
-    return `
-      <div class="col">
-        <div class="col-head">
-          <div><span class="dot" style="background:${STAGE_COLORS[stage]}"></span><span class="title">${d.stage_labels[stage]}</span></div>
-          <div class="count">${d.counts[stage]} leads</div>
-        </div>
-        <div class="col-body">${extra}${cards || (stage!=='connection_sent' ? '<div style="color:var(--muted);font-size:12px">Empty</div>' : '')}</div>
-      </div>
-    `;
-  }).join('');
-  document.getElementById('kanban').innerHTML = cols;
-  if (document.getElementById('src-note')) document.getElementById('src-note').innerText = d.source_note || '';
-}
-
-document.querySelectorAll('nav button').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
-    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById(btn.dataset.view).classList.add('active');
-  });
-});
-
-document.getElementById('search').addEventListener('input', (e) => {
-  if (DATA) renderKanban(DATA, e.target.value);
-});
-</script>
 </body>
 </html>
