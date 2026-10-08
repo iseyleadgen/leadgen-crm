@@ -107,14 +107,12 @@
       <span><span class="sw" style="background:var(--accent)"></span>Connections Sent</span>
       <span><span class="sw" style="background:var(--green)"></span>Connections Accepted</span>
       <span><span class="sw" style="background:var(--gold)"></span>Calls Booked</span>
-      <span><span class="sw" style="background:#e8738c"></span>Conversations Started</span>
     </div>
 
-    <div class="section-title" style="margin-top:36px">Weekly Trend — Connections Accepted + Conversations Started<span class="hint">Sent/Calls not available at weekly granularity from LinkedIn — shown monthly only above</span></div>
+    <div class="section-title" style="margin-top:36px">Weekly Trend — Connections Accepted<span class="hint">Sent/Calls not available at weekly granularity from LinkedIn — shown monthly only above</span></div>
     <div class="chart-wrap" style="overflow-x:auto"><svg class="linechart" id="trend-svg-weekly"></svg></div>
     <div class="lc-legend">
       <span><span class="sw" style="background:var(--green)"></span>Connections Accepted</span>
-      <span><span class="sw" style="background:#e8738c"></span>Conversations Started</span>
     </div>
   </section>
 
@@ -231,7 +229,6 @@ function renderTrend(d) {
     {values: months.map(m => d.monthly[m].sent), color:'#6d8cff'},
     {values: months.map(m => d.monthly[m].accepted), color:'#36cc7a'},
     {values: months.map(m => d.monthly[m].calls_booked), color:'#f0c14f'},
-    {values: months.map(m => d.monthly[m].convos_started||0), color:'#e8738c'},
   ], Math.max(600, months.length*120));
 
   const weeks = Object.keys(d.weekly).sort();
@@ -241,7 +238,6 @@ function renderTrend(d) {
   });
   drawLineChart(document.getElementById('trend-svg-weekly'), wLabels, [
     {values: weeks.map(w => d.weekly[w].accepted), color:'#36cc7a'},
-    {values: weeks.map(w => d.weekly[w].convos_started||0), color:'#e8738c'},
   ], Math.max(600, weeks.length*90));
 }
 
