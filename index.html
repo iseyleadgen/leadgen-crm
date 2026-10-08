@@ -96,6 +96,9 @@
 
     <div class="section-title">Track Split (Track A vs Track B)<span class="hint" id="track-hint"></span></div>
     <div class="chart-wrap" id="track-chart"></div>
+
+    <div class="section-title">Track Split by Month</div>
+    <div class="chart-wrap" id="track-month-chart"></div>
   </section>
 
   <section id="activity" class="view">
@@ -132,14 +135,14 @@ const STAGE_ORDER = ['accepted','warm','follow_up_due','unresponsive','hot','cal
 const STAGE_LABELS = {accepted:'Connection Accepted', warm:'Warm (Ongoing Convo)', follow_up_due:'Follow-Up Due', unresponsive:'Unresponsive (Cold)', hot:'Hot (Link Sent)', call_booked:'Call Booked', closed:'Closed (Sale Made)'};
 const STAGE_COLORS = {accepted:'#e8b94a', warm:'#36cc7a', follow_up_due:'#4f8ff0', unresponsive:'#8a8f9c', hot:'#b77ff0', call_booked:'#2fae68', closed:'#f0c14f'};
 
-const _EMBEDDED_DATA = {"generated_at": "2026-10-08T13:15:00", "source_note": "All numbers pulled directly from LinkedIn (Connections list + Sent Invitations list, fixed scroll bug by scrolling the real 'main' container instead of window). Campaign window: Aug 20 \u2013 Oct 8, 2026.", "counts": {"connection_sent": 313, "connection_sent_lifetime": 411, "accepted": 35, "accepted_total_ever": 56, "warm": 2, "links_sent_total": 3, "call_booked": 3, "closed": 0, "follow_up_due": 11, "unresponsive": 11}, "total_outreach": 724, "monthly": {"2026-08": {"sent": 60, "accepted": 9, "calls_booked": 0}, "2026-09": {"sent": 220, "accepted": 35, "calls_booked": 2}, "2026-10": {"sent": 33, "accepted": 12, "calls_booked": 1}}, "weekly_accepted": {"2026-08-17": 2, "2026-08-24": 7, "2026-08-31": 0, "2026-09-07": 7, "2026-09-14": 9, "2026-09-21": 12, "2026-09-28": 10, "2026-10-05": 9}, "track_split": {"sample_size": 180, "sample_total_sent": 313, "track_a": 91, "track_b": 89, "track_a_pct": 50.6, "track_b_pct": 49.4, "basis": "all connection requests sent (not just accepted), real sample read directly from LinkedIn's Sent Invitations list"}, "named_leads": {"accepted": ["Marco Quarta", "Jin Huang", "Bakul Banthia", "Gerardo Mateo", "Zain Khan", "Jaquory Lunsford", "Philip Baba", "Ameya Bhatawdekar", "Armon Petrossian", "Ray Shan", "Uzi Dutta", "Kharisma Knepshield Moraski"], "warm": ["David Urbanic AIGP", "Pallavi Doshi"], "follow_up_due": ["Maher Hanafi", "Yersultan Jussakinov", "Jason Lopatecki", "Yongsheng Wu", "Ryan Seams", "Stephanie J. Neill", "Arsen Chaloyan", "Raphael Vullierme", "Nick Bogaty", "Sohan Karun", "Sean Gourley"], "unresponsive": ["Matthew Pugh", "Balaji Ramaswamy", "Matt Holt", "Joanna Riley", "Zeeshan Khan", "Cassandra Laurence", "Harel Boren", "Alex Tang", "Yardley Pohl", "PD Wanjari", "Ivan Saprov"], "hot": ["Emily Pappas", "Lucas Boreel", "Javier Calderon Jr"], "call_booked": ["Emily Pappas", "Lucas Boreel", "Javier Calderon Jr"], "closed": []}, "rates": {"connection_to_accepted": 17.9, "accepted_to_warm": 3.6, "accepted_to_hot": 5.4, "accepted_to_call": 5.4}, "insights": ["Track split across ALL sent connection requests (not just accepted): 50.6% Track A, 49.4% Track B \u2014 nearly even volume sent, Track A still converts to acceptance at a historically higher rate.", "All 3 calls booked came after a booking link was sent to exactly 3 leads \u2014 100% of links sent converted to a booked call so far.", "11 accepted leads have gone genuinely unresponsive (3+ touches sent, no reply, past the follow-up cadence window) \u2014 moved to a dedicated Unresponsive column rather than sitting in Follow-Up indefinitely.", "11 separate accepted leads are still within the active Follow-Up window (1-2 touches sent, due for next touch per the 7-10 day cadence rule).", "Weekly accepted connections show a real dip to 0 the week of Aug 31, before climbing to a peak of 12 the week of Sep 21.", "October is 8 days in with 12 accepted and already 1 call booked \u2014 fastest-converting month so far."]};
+const _EMBEDDED_DATA = {"generated_at": "2026-10-08T23:15:00", "source_note": "All numbers pulled directly from LinkedIn (Connections API + full Sent Invitations list, 411 real cards individually parsed). Campaign window: Aug 1 \u2013 Oct 8, 2026 only (July excluded per instruction).", "counts": {"connection_sent_lifetime": 411, "connection_sent_campaign": 385, "accepted": 35, "accepted_total_ever": 87, "warm": 2, "links_sent_total": 3, "call_booked": 3, "closed": 0, "follow_up_due": 11, "unresponsive": 11}, "monthly": {"2026-08": {"sent": 71, "accepted": 28, "calls_booked": 0, "convos_started": 0}, "2026-09": {"sent": 173, "accepted": 35, "calls_booked": 2, "convos_started": 2}, "2026-10": {"sent": 141, "accepted": 13, "calls_booked": 1, "convos_started": 0}}, "weekly": {"2026-08-03": {"accepted": 3, "convos_started": 0}, "2026-08-10": {"accepted": 4, "convos_started": 0}, "2026-08-17": {"accepted": 2, "convos_started": 0}, "2026-08-24": {"accepted": 7, "convos_started": 0}, "2026-08-31": {"accepted": 0, "convos_started": 0}, "2026-09-07": {"accepted": 7, "convos_started": 0}, "2026-09-14": {"accepted": 9, "convos_started": 0}, "2026-09-21": {"accepted": 12, "convos_started": 0}, "2026-09-28": {"accepted": 10, "convos_started": 2}, "2026-10-05": {"accepted": 9, "convos_started": 0}}, "track_split": {"basis": "FULL set, not a sample: all 385 campaign-window sent connection requests individually parsed and classified by real note text", "track_a": 192, "track_b": 113, "no_note": 80, "track_a_pct": 63.0, "track_b_pct": 37.0, "monthly": {"2026-08": {"track_a": 23, "track_b": 0, "no_note": 48}, "2026-09": {"track_a": 100, "track_b": 41, "no_note": 32}, "2026-10": {"track_a": 69, "track_b": 72, "no_note": 0}}, "accepted_by_track_note": "NOT independently verifiable \u2014 LinkedIn's Connections API does not expose names/notes, only profile URNs and accept-dates; matching would require 87 individual profile lookups. Flagged honestly rather than estimated."}, "named_leads": {"accepted": ["Marco Quarta", "Jin Huang", "Bakul Banthia", "Gerardo Mateo", "Zain Khan", "Jaquory Lunsford", "Philip Baba", "Ameya Bhatawdekar", "Armon Petrossian", "Ray Shan", "Uzi Dutta", "Kharisma Knepshield Moraski"], "warm": ["David Urbanic AIGP", "Pallavi Doshi", "Jocelyn Baxter"], "follow_up_due": ["Maher Hanafi", "Yersultan Jussakinov", "Jason Lopatecki", "Yongsheng Wu", "Ryan Seams", "Stephanie J. Neill", "Arsen Chaloyan", "Raphael Vullierme", "Nick Bogaty", "Sohan Karun", "Sean Gourley"], "unresponsive": ["Matthew Pugh", "Balaji Ramaswamy", "Matt Holt", "Joanna Riley", "Zeeshan Khan", "Cassandra Laurence", "Harel Boren", "Alex Tang", "Yardley Pohl", "PD Wanjari", "Ivan Saprov"], "hot": ["Emily Pappas", "Lucas Boreel", "Javier Calderon Jr"], "call_booked": ["Emily Pappas", "Lucas Boreel", "Javier Calderon Jr"], "closed": []}, "rates": {"connection_to_accepted": 22.6, "accepted_to_warm": 3.4, "accepted_to_hot": 3.4, "accepted_to_call": 3.4}, "insights": ["Full breakdown (not a sample) of all 385 sent connection requests Aug 1\u2013Oct 8: 63.0% Track A, 37.0% Track B of classified notes; 80 had no custom note at all.", "Track B volume grew sharply in October (72 sent) vs almost none in August (0) \u2014 a real, deliberate shift toward more cold outreach this month.", "All 3 calls booked came after a booking link was sent to exactly 3 leads \u2014 100% of links sent converted to a booked call so far.", "11 accepted leads have gone genuinely unresponsive (3+ touches, no reply) \u2014 separated into their own Unresponsive column.", "11 separate accepted leads are still in active Follow-Up (1-2 touches sent, due for next touch).", "Accepted-by-track (which track converts better) could not be verified without a disproportionate number of individual profile lookups \u2014 flagged rather than estimated."]};
 let DATA = _EMBEDDED_DATA;
 
 document.getElementById('updated').innerText = 'Updated ' + new Date(DATA.generated_at).toLocaleString();
 
 function renderDashboard(d) {
-  document.getElementById('d-total').innerText = d.total_outreach;
-  document.getElementById('d-sent').innerText = d.counts.connection_sent;
+  document.getElementById('d-total').innerText = d.counts.connection_sent_lifetime;
+  document.getElementById('d-sent').innerText = d.counts.connection_sent_campaign;
   document.getElementById('d-accepted').innerText = d.counts.accepted_total_ever;
   document.getElementById('d-warm').innerText = (d.named_leads.warm||[]).length;
   document.getElementById('d-hot').innerText = d.counts.links_sent_total;
@@ -156,11 +159,25 @@ function renderDashboard(d) {
   ).join('');
 
   const ts = d.track_split;
-  document.getElementById('track-hint').innerText = `based on a ${ts.sample_size}/${ts.sample_total_sent} real sample of ALL sent connection requests, read off LinkedIn`;
+  document.getElementById('track-hint').innerText = `FULL set (not a sample): all ${ts.track_a+ts.track_b+ts.no_note} sent connection requests, Aug 1 – Oct 8`;
   document.getElementById('track-chart').innerHTML = `
     <div class="bar-row"><div class="bar-label">Track A (warm)</div><div class="bar-track"><div class="bar-fill trackA" style="width:${ts.track_a_pct}%">${ts.track_a} (${ts.track_a_pct}%)</div></div></div>
     <div class="bar-row"><div class="bar-label">Track B (cold)</div><div class="bar-track"><div class="bar-fill trackB" style="width:${ts.track_b_pct}%">${ts.track_b} (${ts.track_b_pct}%)</div></div></div>
+    <div class="bar-row"><div class="bar-label">No note sent</div><div class="bar-track"><div class="bar-fill" style="width:${Math.round(ts.no_note/(ts.track_a+ts.track_b+ts.no_note)*100)}%;background:#4b5163">${ts.no_note}</div></div></div>
   `;
+
+  const monthKeys = Object.keys(ts.monthly);
+  document.getElementById('track-month-chart').innerHTML = monthKeys.map(m => {
+    const mo = ts.monthly[m];
+    const total = mo.track_a + mo.track_b;
+    const aPct = total ? Math.round(mo.track_a/total*100) : 0;
+    const bPct = total ? 100-aPct : 0;
+    const label = new Date(m+'-01').toLocaleString('en', {month:'short'});
+    return `<div class="bar-row"><div class="bar-label">${label}</div><div class="bar-track" style="display:flex">
+      <div class="bar-fill trackA" style="width:${aPct}%">${mo.track_a}</div>
+      <div class="bar-fill trackB" style="width:${bPct}%">${mo.track_b}</div>
+    </div></div>`;
+  }).join('');
 }
 
 function drawLineChart(svgEl, labels, series, w) {
@@ -210,15 +227,17 @@ function renderTrend(d) {
     {values: months.map(m => d.monthly[m].sent), color:'#6d8cff'},
     {values: months.map(m => d.monthly[m].accepted), color:'#36cc7a'},
     {values: months.map(m => d.monthly[m].calls_booked), color:'#f0c14f'},
+    {values: months.map(m => d.monthly[m].convos_started||0), color:'#e8738c'},
   ], Math.max(600, months.length*120));
 
-  const weeks = Object.keys(d.weekly_accepted).sort();
+  const weeks = Object.keys(d.weekly).sort();
   const wLabels = weeks.map(w => {
     const dt = new Date(w);
     return (dt.getMonth()+1) + '/' + dt.getDate();
   });
   drawLineChart(document.getElementById('trend-svg-weekly'), wLabels, [
-    {values: weeks.map(w => d.weekly_accepted[w]), color:'#36cc7a'},
+    {values: weeks.map(w => d.weekly[w].accepted), color:'#36cc7a'},
+    {values: weeks.map(w => d.weekly[w].convos_started||0), color:'#e8738c'},
   ], Math.max(600, weeks.length*90));
 }
 
