@@ -192,9 +192,9 @@ function renderDashboard(d) {
       <div class="bar-row"><div class="bar-label">Track A accepted</div><div class="bar-track"><div class="bar-fill trackA" style="width:${abt.track_a/maxAB*100}%">${abt.track_a}</div></div></div>
       <div class="bar-row"><div class="bar-label">Track B accepted</div><div class="bar-track"><div class="bar-fill trackB" style="width:${abt.track_b/maxAB*100}%">${abt.track_b}</div></div></div>
       <div style="margin-top:10px;font-size:13px;color:var(--muted)">
-        Responses: Track A <b style="color:var(--text)">${abt.track_a_responses}/${abt.track_a} (${abt.track_a_response_rate_pct}%)</b> &nbsp;|&nbsp;
-        Track B <b style="color:var(--text)">${abt.track_b_responses}/${abt.track_b} (${abt.track_b_response_rate_pct}%)</b>
-        &nbsp;&nbsp;<span style="font-size:11px">(+${abt.unverified} accepted leads not yet individually track-reviewed)</span>
+        Of reviewed leads: Track A <b style="color:var(--text)">${abt.track_a_responses}/${abt.track_a} responded (${abt.track_a_response_rate_pct}%)</b> &nbsp;|&nbsp;
+        Track B <b style="color:var(--text)">${abt.track_b_responses}/${abt.track_b} responded (${abt.track_b_response_rate_pct}%)</b>
+        <br><span style="font-size:11px">⚠️ Based on ${abt.track_a+abt.track_b} of ${abt.track_a+abt.track_b+abt.unverified} total accepted leads reviewed so far — ${abt.unverified} still unverified, real % may shift once they're checked.</span>
       </div>
     `;
   }
